@@ -1,8 +1,8 @@
 model_config: model/config_1m.json
-tokenizer_dir: tokenizer
-train_file: data/clean/train.jsonl
-val_file: data/clean/val.jsonl
-output_dir: checkpoints/aina-nano-1m/pretrain
+tokenizer_dir: ${AINA_RUN_ROOT}/tokenizers/aina-nano-1m
+train_file: ${AINA_RUN_ROOT}/data/clean/train.jsonl
+val_file: ${AINA_RUN_ROOT}/data/clean/val.jsonl
+output_dir: ${AINA_RUN_ROOT}/checkpoints/aina-nano-1m/pretrain
 context_length: 128
 learning_rate: 0.0003
 weight_decay: 0.1

@@ -8,6 +8,7 @@ from typing import Any
 import torch
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+from train.path_utils import expand_path
 from transformers import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
 
 
@@ -94,15 +95,15 @@ def main() -> None:
     random.seed(int(cfg["seed"]))
     torch.manual_seed(int(cfg["seed"]))
 
-    tokenizer = LlamaTokenizer.from_pretrained(str(cfg["tokenizer_dir"]))
+    tokenizer = LlamaTokenizer.from_pretrained(str(expand_path(cfg["tokenizer_dir"])))
     model_config = LlamaConfig.from_pretrained(str(cfg["model_config"]))
     model_config.vocab_size = len(tokenizer)
     model_config.pad_token_id = tokenizer.pad_token_id
     model_config.bos_token_id = tokenizer.bos_token_id
     model_config.eos_token_id = tokenizer.eos_token_id
 
-    train_dataset = CausalTextDataset(load_texts(Path(str(cfg["train_file"]))), tokenizer, int(cfg["context_length"]))
-    val_dataset = CausalTextDataset(load_texts(Path(str(cfg["val_file"]))), tokenizer, int(cfg["context_length"]))
+    train_dataset = CausalTextDataset(load_texts(expand_path(cfg["train_file"])), tokenizer, int(cfg["context_length"]))
+    val_dataset = CausalTextDataset(load_texts(expand_path(cfg["val_file"])), tokenizer, int(cfg["context_length"]))
     if not train_dataset:
         raise SystemExit("No training examples found. Run data/clean_dataset.py first.")
 
@@ -123,7 +124,7 @@ def main() -> None:
         collate_fn=lambda batch: collate_batch(batch, tokenizer.pad_token_id),
     )
 
-    output_dir = Path(str(cfg["output_dir"]))
+    output_dir = expand_path(cfg["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
     max_steps = int(cfg["max_steps"])
     global_step = 0

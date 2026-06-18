@@ -8,6 +8,7 @@ from typing import Any
 import torch
 from torch.utils.data import DataLoader, Dataset, random_split
 from tqdm import tqdm
+from train.path_utils import expand_path
 from transformers import LlamaForCausalLM, LlamaTokenizer
 
 IGNORE_INDEX = -100
@@ -110,12 +111,12 @@ def main() -> None:
     random.seed(int(cfg["seed"]))
     torch.manual_seed(int(cfg["seed"]))
 
-    tokenizer = LlamaTokenizer.from_pretrained(str(cfg["tokenizer_dir"]))
-    model = LlamaForCausalLM.from_pretrained(str(cfg["base_model_dir"]))
+    tokenizer = LlamaTokenizer.from_pretrained(str(expand_path(cfg["tokenizer_dir"])))
+    model = LlamaForCausalLM.from_pretrained(str(expand_path(cfg["base_model_dir"])))
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
-    dataset = InstructionDataset(Path(str(cfg["train_file"])), tokenizer, int(cfg["context_length"]))
+    dataset = InstructionDataset(expand_path(cfg["train_file"]), tokenizer, int(cfg["context_length"]))
     val_size = max(1, int(len(dataset) * 0.1))
     train_size = len(dataset) - val_size
     train_dataset, val_dataset = random_split(
@@ -143,7 +144,7 @@ def main() -> None:
         weight_decay=float(cfg["weight_decay"]),
     )
 
-    output_dir = Path(str(cfg["output_dir"]))
+    output_dir = expand_path(cfg["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
     max_steps = int(cfg["max_steps"])
     global_step = 0

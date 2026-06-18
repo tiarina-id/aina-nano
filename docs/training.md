@@ -10,6 +10,8 @@ Aina Nano provides two main training configs:
 Use the 1M config to verify that the full training loop works before attempting a longer run.
 
 ```bash
+export AINA_RUN_ROOT="${AINA_RUN_ROOT:-/home/data/aina-runs}"
+./scripts/prepare_run_dirs.sh
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -24,7 +26,7 @@ python train/pretrain.py --config train/configs/aina_nano_1m.yaml
 Expected output:
 
 ```txt
-checkpoints/aina-nano-1m/pretrain/
+$AINA_RUN_ROOT/checkpoints/aina-nano-1m/pretrain/
 ```
 
 ## Larger Toy Run
@@ -32,8 +34,10 @@ checkpoints/aina-nano-1m/pretrain/
 After the 1M sanity run succeeds, use the 10M config for a longer experiment:
 
 ```bash
-python data/clean_dataset.py
-python tokenizer/train_tokenizer.py --vocab-size 8000
+export AINA_RUN_ROOT="${AINA_RUN_ROOT:-/home/data/aina-runs}"
+./scripts/prepare_run_dirs.sh
+python data/clean_dataset.py --raw-dir "$AINA_RUN_ROOT/data/raw" --output-dir "$AINA_RUN_ROOT/data/clean"
+python tokenizer/train_tokenizer.py --train-file "$AINA_RUN_ROOT/data/clean/train.jsonl" --output-dir "$AINA_RUN_ROOT/tokenizers/aina-nano-10m" --vocab-size 8000
 python tokenizer/test_tokenizer.py
 python train/pretrain.py --config train/configs/aina_nano_10m.yaml
 ```
@@ -41,13 +45,13 @@ python train/pretrain.py --config train/configs/aina_nano_10m.yaml
 Expected output:
 
 ```txt
-checkpoints/aina-nano-10m/pretrain/
+$AINA_RUN_ROOT/checkpoints/aina-nano-10m/pretrain/
 ```
 
 ## Export
 
 ```bash
 python export/export_hf.py \
-  --checkpoint-dir checkpoints/aina-nano-10m/pretrain \
-  --output-dir models/aina-nano-10m-base
+  --checkpoint-dir $AINA_RUN_ROOT/checkpoints/aina-nano-10m/pretrain \
+  --output-dir $AINA_RUN_ROOT/models/aina-nano-10m-base
 ```

@@ -133,6 +133,8 @@ Config arsitektur:
 ## Quickstart Smoke Test
 
 ```bash
+export AINA_RUN_ROOT="${AINA_RUN_ROOT:-/home/data/aina-runs}"
+./scripts/prepare_run_dirs.sh
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -143,7 +145,7 @@ python data/clean_dataset.py
 python tokenizer/train_tokenizer.py --vocab-size 1024
 python tokenizer/test_tokenizer.py
 python train/pretrain.py --config train/configs/aina_nano_1m.yaml
-python eval/generate.py --model-dir checkpoints/aina-nano-1m/pretrain --prompt "API adalah" --max-new-tokens 80
+python eval/generate.py --model-dir $AINA_RUN_ROOT/checkpoints/aina-nano-1m/pretrain --prompt "API adalah" --max-new-tokens 80
 ```
 
 ## 10M Training Run
@@ -161,12 +163,12 @@ python train/pretrain.py --config train/configs/aina_nano_10m.yaml
 
 ```bash
 python export/export_hf.py \
-  --checkpoint-dir checkpoints/aina-nano-10m/pretrain \
-  --output-dir models/aina-nano-10m-base
+  --checkpoint-dir $AINA_RUN_ROOT/checkpoints/aina-nano-10m/pretrain \
+  --output-dir $AINA_RUN_ROOT/models/aina-nano-10m-base
 
 ./export/convert_gguf.sh \
-  models/aina-nano-10m-base \
-  models/aina-nano-10m-base.gguf
+  $AINA_RUN_ROOT/models/aina-nano-10m-base \
+  $AINA_RUN_ROOT/models/aina-nano-10m-base.gguf
 ```
 
 ## Guardrail Internal

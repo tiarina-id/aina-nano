@@ -38,8 +38,8 @@ Before increasing training time or dataset size, verify:
 
 ```bash
 python train/pretrain.py --config train/configs/aina_nano_1m.yaml
-python eval/generate.py --model-dir checkpoints/aina-nano-1m/pretrain --prompt "API adalah" --max-new-tokens 80
-python export/export_hf.py --checkpoint-dir checkpoints/aina-nano-1m/pretrain --output-dir models/aina-nano-1m
+python eval/generate.py --model-dir $AINA_RUN_ROOT/checkpoints/aina-nano-1m/pretrain --prompt "API adalah" --max-new-tokens 80
+python export/export_hf.py --checkpoint-dir $AINA_RUN_ROOT/checkpoints/aina-nano-1m/pretrain --output-dir $AINA_RUN_ROOT/models/aina-nano-1m
 ```
 
 If this fails, fix the pipeline before scaling up.

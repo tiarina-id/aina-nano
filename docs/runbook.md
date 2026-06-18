@@ -90,7 +90,7 @@ Validate generation:
 
 ```bash
 python eval/generate.py \
-  --model-dir checkpoints/aina-nano-1m/pretrain \
+  --model-dir $AINA_RUN_ROOT/checkpoints/aina-nano-1m/pretrain \
   --prompt "API adalah" \
   --max-new-tokens 80
 ```
@@ -99,14 +99,14 @@ python eval/generate.py \
 
 ```bash
 python export/export_hf.py \
-  --checkpoint-dir checkpoints/aina-nano-1m/pretrain \
-  --output-dir models/aina-nano-1m
+  --checkpoint-dir $AINA_RUN_ROOT/checkpoints/aina-nano-1m/pretrain \
+  --output-dir $AINA_RUN_ROOT/models/aina-nano-1m
 ```
 
 Optional GGUF:
 
 ```bash
-./export/convert_gguf.sh models/aina-nano-1m models/aina-nano-1m.gguf
+./export/convert_gguf.sh $AINA_RUN_ROOT/models/aina-nano-1m $AINA_RUN_ROOT/models/aina-nano-1m.gguf
 ```
 
 If this fails, do not run the 10M config yet.
@@ -129,16 +129,16 @@ Monitor:
 
 ```bash
 python export/export_hf.py \
-  --checkpoint-dir checkpoints/aina-nano-10m/pretrain \
-  --output-dir models/aina-nano-10m-base
+  --checkpoint-dir $AINA_RUN_ROOT/checkpoints/aina-nano-10m/pretrain \
+  --output-dir $AINA_RUN_ROOT/models/aina-nano-10m-base
 ```
 
 GGUF:
 
 ```bash
 ./export/convert_gguf.sh \
-  models/aina-nano-10m-base \
-  models/aina-nano-10m-base.gguf
+  $AINA_RUN_ROOT/models/aina-nano-10m-base \
+  $AINA_RUN_ROOT/models/aina-nano-10m-base.gguf
 ```
 
 ## 8. Record Experiment
@@ -170,13 +170,35 @@ Output:
 
 ```text
 reports/aina-nano-0.01b-base/
-models/aina-nano-10m-base/
+$AINA_RUN_ROOT/models/aina-nano-10m-base/
 ```
 
 Optional GGUF:
 
 ```bash
 ./export/convert_gguf.sh \
-  models/aina-nano-10m-base \
-  models/aina-nano-10m-base.gguf
+  $AINA_RUN_ROOT/models/aina-nano-10m-base \
+  $AINA_RUN_ROOT/models/aina-nano-10m-base.gguf
 ```
+
+## Artifact Root
+
+Default artifact root:
+
+```bash
+export AINA_RUN_ROOT="${AINA_RUN_ROOT:-/home/data/aina-runs}"
+```
+
+Prepare folders:
+
+```bash
+./scripts/prepare_run_dirs.sh
+```
+
+Upload raw datasets to:
+
+```text
+/home/data/aina-runs/data/raw/*.jsonl
+```
+
+The training configs read clean data, tokenizer, and checkpoints from `$AINA_RUN_ROOT`.

@@ -55,8 +55,8 @@ After release export:
 
 ```bash
 ./export/convert_gguf.sh \
-  models/aina-nano-10m-base \
-  models/aina-nano-10m-base.gguf
+  $AINA_RUN_ROOT/models/aina-nano-10m-base \
+  $AINA_RUN_ROOT/models/aina-nano-10m-base.gguf
 ```
 
 ## Promotion Rule
