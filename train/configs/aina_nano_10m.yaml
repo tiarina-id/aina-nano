@@ -1,0 +1,14 @@
+model_config: model/config_10m.json
+tokenizer_dir: tokenizer
+train_file: data/clean/train.jsonl
+val_file: data/clean/val.jsonl
+output_dir: checkpoints/aina-nano-10m/pretrain
+context_length: 1024
+learning_rate: 0.0003
+weight_decay: 0.1
+batch_size: 16
+epochs: 20
+max_steps: 100000
+eval_every_steps: 1000
+save_every_steps: 5000
+seed: 42

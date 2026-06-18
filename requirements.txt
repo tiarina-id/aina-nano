@@ -1,0 +1,11 @@
+# Lightweight local setup for cleaning, tokenizer, docs, and API helpers.
+tokenizers
+transformers==4.57.1
+safetensors
+sentencepiece
+numpy
+tqdm
+fastapi
+uvicorn
+openai
+protobuf

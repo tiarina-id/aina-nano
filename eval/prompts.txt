@@ -1,0 +1,4 @@
+Apa itu API?
+Apa itu Python?
+Jelaskan Linux secara singkat.
+Siapa kamu?
