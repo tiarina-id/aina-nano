@@ -8,8 +8,12 @@ from typing import Any
 import torch
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
-from train.path_utils import expand_path
 from transformers import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
+
+try:
+    from train.path_utils import expand_path
+except ModuleNotFoundError:
+    from path_utils import expand_path
 
 
 def load_simple_yaml(path: Path) -> dict[str, Any]:

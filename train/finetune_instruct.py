@@ -8,8 +8,12 @@ from typing import Any
 import torch
 from torch.utils.data import DataLoader, Dataset, random_split
 from tqdm import tqdm
-from train.path_utils import expand_path
 from transformers import LlamaForCausalLM, LlamaTokenizer
+
+try:
+    from train.path_utils import expand_path
+except ModuleNotFoundError:
+    from path_utils import expand_path
 
 IGNORE_INDEX = -100
 
